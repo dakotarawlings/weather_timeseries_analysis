@@ -114,20 +114,3 @@ def clean_data(df, parameter):
 
 # plot_parameter(hist_df, 'ATMP')
 
-
-# %%
-
-
-import pandas as pd
-
-df=pd.DataFrame({'MatUse':['hello dog', 'one two']})
-
-
-mask=['dog']
-
-
-test_df=df[len(set(df['MatUse']).intersection(set(mask.split())))>0]
-
-
-
-# %%
