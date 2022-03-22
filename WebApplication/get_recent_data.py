@@ -1,6 +1,8 @@
 #%%
 import sqlite3
 
+from statsmodels.tsa.deterministic import CalendarFourier, DeterministicProcess
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -59,14 +61,50 @@ def format_df(df_in):
     df["date"] = pd.to_datetime(df["date"])
     return df
 
-def transform_data(df_in):
-    df=df_in.copy()
+def clean_data(df_in):
+    df=df_in.copy(deep=True)
     df=df[['ATMP', 'WTMP', 'WSPD']]
     df_cleaned = df_cleaned.interpolate(method='linear', axis=0).ffill().bfill()
     df_cleaned = df_cleaned.resample("H").mean()
     df_cleaned = df_cleaned.interpolate(method='linear', axis=0).ffill().bfill()
     df_engineered= df_engineered.resample("D").max()
 
-def engineer_data(df_in):
-    
+def fourier_features(df_in):
 
+    df=df_in.copy(deep=True)
+    fourier_pairs=CalendarFourier(freq="A", order=3)
+
+
+    dp=DeterministicProcess(
+        index=df.index,
+        constant=True,
+        order=1,
+        additional_terms=[fourier_pairs],
+        drop=True,
+    )
+
+    X=dp.in_sample()
+
+def make_lag_columns(df_in, num_lags, lag_column):
+
+    df=df_in.copy(deep=True)
+
+    for i in range(num_lags):
+        lag=i+1
+        new_lag_column=f'{lag_column}_lag_{lag}'
+        df[new_lag_column]=df[lag_column].shift(lag)
+
+        df.dropna(subset=[new_lag_column], inplace=True)
+
+    return df
+
+
+#Save data to local SQLite database
+conn = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\NDBC_model_building_database.db")
+df_engineered.to_sql(name=f'NDBC_historical_data_for_training',con=conn,schema='NDBC_model_building_database.db',if_exists='replace') 
+
+
+con = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\NDBC_model_building_database.db")
+cursor = con.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+print(cursor.fetchall())

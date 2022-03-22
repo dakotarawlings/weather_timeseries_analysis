@@ -13,6 +13,10 @@ app=Flask(__name__)
 #Define flask endpoint for the main html page
 @app.route('/')
 def index():
+
+    
+
+
     return render_template('index.html')
 
 #define an API endpoint that takes in an image file from a post reqest and returns
