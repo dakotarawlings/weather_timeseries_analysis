@@ -30,7 +30,12 @@ class BoostedHybridModel:
         self.model_2=model_2
         self.y_column=None
 
-    def fit(self, X_model_1, X_model_2, y):
+    def fit(self, X_model_2, y):
+
+        fourier_pairs=CalendarFourier(freq="A", order=3)
+        X=fourier_pairs.in_sample(X_model_2.index)
+        X['constant']=1
+        X_model_1=X
         self.model_1.fit(X_model_1, y)
         y_fit=pd.Series(self.model_1.predict(X_model_1), index=X_model_1.index, name=y.name)
         y_residuals=y-y_fit
@@ -42,22 +47,13 @@ class BoostedHybridModel:
     def predict(self, X_model_2):
 
         fourier_pairs=CalendarFourier(freq="A", order=3)
-
-
-        dp=DeterministicProcess(
-            index=X_model_2.index,
-            constant=True,
-            order=1,
-            additional_terms=[fourier_pairs],
-            drop=True,
-        )
-
-        X=dp.in_sample()
-
+        X=fourier_pairs.in_sample(X_model_2.index)
+        X['constant']=1
         X_model_1=X
         y_predict=pd.Series(self.model_1.predict(X_model_1), index=X_model_1.index, name=self.y_column)
         y_predict+=self.model_2.predict(X_model_2)
         return y_predict
+
 
 
 def get_2_day_temp_forecast():
@@ -74,8 +70,8 @@ def get_2_day_temp_forecast():
         'WTMP_lag_2', 'WTMP_lag_3', 'WTMP_lag_4', 'WTMP_lag_5',
        'WTMP_lag_6', 'WTMP_lag_7', 'WTMP_lag_8', 'WSPD_lag_2']]
 
-    # y_predp=pmodel.predict(X_model_2)
-    # modelFile.close()
-    return X_model_2
+    y_predp=pmodel.predict(X_model_2)
+    modelFile.close()
+    return y_predp
 
 forecast=get_2_day_temp_forecast()

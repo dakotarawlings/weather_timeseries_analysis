@@ -1,0 +1,13 @@
+/*define formatting for image at top of page*/
+.imagebanner {
+
+    position: relative;
+    height: 150px;
+    padding: 1px;
+    margin-top: -2px;
+    margin-left: -10px;
+    background: teal;
+        background-image: url("../images/BannerPicture.jpg");
+        background-size: cover;
+    
+}

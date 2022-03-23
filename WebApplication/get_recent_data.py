@@ -111,20 +111,6 @@ def fourier_features(df_in):
 
 
 
-
-
-# def make_lag_columns(df_in, num_lags, lag_column):
-
-#     df=df_in.copy(deep=True)
-
-#     for i in range(num_lags):
-#         lag=i+1
-#         new_lag_column=f'{lag_column}_lag_{lag}'
-#         df[new_lag_column]=df[lag_column].shift(lag)
-
-#     return df
-
-
 def make_lag_columns(df_in, num_lags, lag_column):
 
     df=df_in.copy(deep=True)

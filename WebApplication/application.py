@@ -7,6 +7,7 @@ from PIL import Image
 import io
 import numpy as np
 import get_recent_data
+import get_forecast
 import pickle
 
 #Call flask constructor
@@ -14,22 +15,14 @@ app=Flask(__name__)
 
 #Define flask endpoint for the main html page
 
-def get_2_day_temp_forecast():
-    modelFile = open('modelFile', 'rb')     
-    pmodel = pickle.load(modelFile)
+@app.route('/')
+def index():
 
     df=get_recent_data.update_database()
     
     plot_data=df.dropna()
 
-    two_day_data=df.iloc[[len(plot_data)+1]]
-    X_model_2=two_day_data[[ 'ATMP_lag_2', 'ATMP_lag_3',
-       'ATMP_lag_4', 'ATMP_lag_5', 'ATMP_lag_6', 'ATMP_lag_7', 'ATMP_lag_8',
-        'WTMP_lag_2', 'WTMP_lag_3', 'WTMP_lag_4', 'WTMP_lag_5',
-       'WTMP_lag_6', 'WTMP_lag_7', 'WTMP_lag_8', 'WSPD_lag_2']]
-
-@app.route('/')
-def index():
+    forecast_2_day=get_forecast.get_2_day_temp_forecast()
 
     return render_template('index.html')
 
