@@ -13,6 +13,7 @@ import pandas as pd
 from datetime import datetime
 
 
+
 def get_realtime_data(station_number):
         STATIONNUMBER=str(station_number)
         URL=f'https://www.ndbc.noaa.gov/data/realtime2/{STATIONNUMBER}.txt'
@@ -33,6 +34,17 @@ def get_realtime_data(station_number):
         return df_NDBC_realtime      
 
 
+#Format a dataframe after impoting from SQL
+def format_df(df_in):
+    df=df_in.copy(deep=True)
+    df["date"] = pd.to_datetime(df["datetime"])
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    df=df.set_index('datetime')
+
+    return df
+
+
+
 # Funciton to recognize NaN values (most stations report errors/NaN values as "99..")
 # Also convert all parameters to floats
 
@@ -40,34 +52,42 @@ def nines_to_nans(df_in, data_columns):
 
     df=df_in.copy(deep=True)
 
+    for column in df.columns:
+        df[column]=df[column].apply(lambda x: np.NaN if x=='MM' else x)
+
     for column in data_columns:
         df[column] = pd.to_numeric(df[column], errors='coerce')
+
+
 
         df[column] = df[column].astype(float)
 
         #Here we change the value to NaN if it is close to the max value which is likely 99..
         max_value=max(df[column])
+        
 
         if '99' in str(max_value):
             df[column]=df[column].apply(lambda x: np.NaN if x>max_value-1 else x)
     
     return df
 
-#Format a dataframe after impoting from SQL
-def format_df(df_in):
-    df=df_in.copy(deep=True)
-    df["datetime"] = pd.to_datetime(df["datetime"])
-    df=df.set_index('datetime')
-    df["date"] = pd.to_datetime(df["date"])
-    return df
+
+
+
 
 def clean_data(df_in):
     df=df_in.copy(deep=True)
+    #Might want to have this as function input
     df=df[['ATMP', 'WTMP', 'WSPD']]
-    df_cleaned = df_cleaned.interpolate(method='linear', axis=0).ffill().bfill()
-    df_cleaned = df_cleaned.resample("H").mean()
-    df_cleaned = df_cleaned.interpolate(method='linear', axis=0).ffill().bfill()
-    df_engineered= df_engineered.resample("D").max()
+    df = df.interpolate(method='linear', axis=0).ffill().bfill()
+    df= df.resample("D").max()
+    df = df.interpolate(method='linear', axis=0).ffill().bfill()
+    
+    return df
+
+
+
+
 
 def fourier_features(df_in):
 
@@ -85,26 +105,72 @@ def fourier_features(df_in):
 
     X=dp.in_sample()
 
-def make_lag_columns(df_in, num_lags, lag_column):
-
-    df=df_in.copy(deep=True)
-
-    for i in range(num_lags):
-        lag=i+1
-        new_lag_column=f'{lag_column}_lag_{lag}'
-        df[new_lag_column]=df[lag_column].shift(lag)
-
-        df.dropna(subset=[new_lag_column], inplace=True)
+    df=df.join(X)
 
     return df
 
 
-#Save data to local SQLite database
-conn = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\NDBC_model_building_database.db")
-df_engineered.to_sql(name=f'NDBC_historical_data_for_training',con=conn,schema='NDBC_model_building_database.db',if_exists='replace') 
 
 
-con = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\NDBC_model_building_database.db")
-cursor = con.cursor()
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-print(cursor.fetchall())
+
+# def make_lag_columns(df_in, num_lags, lag_column):
+
+#     df=df_in.copy(deep=True)
+
+#     for i in range(num_lags):
+#         lag=i+1
+#         new_lag_column=f'{lag_column}_lag_{lag}'
+#         df[new_lag_column]=df[lag_column].shift(lag)
+
+#     return df
+
+
+def make_lag_columns(df_in, num_lags, lag_column):
+
+    df=df_in.copy(deep=True)
+    new_cols=pd.DataFrame()
+    for i in range(num_lags):
+        lag=i+1
+        new_lag_column=f'{lag_column}_lag_{lag}'
+        new_col=df[lag_column].shift(periods=lag, freq='D').rename(new_lag_column)
+
+        new_cols=new_cols.join(new_col, how='outer')
+
+    df=df.join(new_cols, how='outer')
+    return  df
+
+
+
+def update_database():
+
+        STATIONNUMBER='46053'
+
+        data_columns=['ATMP', 'WTMP', 'WSPD']
+
+        df=get_realtime_data(STATIONNUMBER)
+
+        df=format_df(df)
+
+        df=nines_to_nans(df, data_columns)
+
+        df=clean_data(df)
+
+
+
+        df=make_lag_columns(df, 8, 'ATMP')
+        df=make_lag_columns(df, 8, 'WTMP')
+        df=make_lag_columns(df, 2, 'WSPD')
+
+        #df.dropna(inplace=True)
+
+        #Save data to local SQLite database
+        conn = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\WebApplication\NDBC_recent_cleaned_data.db")
+        df.to_sql(name=f'recent_data',con=conn,schema='NDBC_recent_cleaned_data.db',if_exists='replace') 
+
+        return df
+
+df=update_database()
+
+
+
+# %%

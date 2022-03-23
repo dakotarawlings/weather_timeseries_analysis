@@ -9,7 +9,6 @@ import time
 
 import requests
 import pandas as pd
-import json
 from datetime import datetime
 import plotting_functions
 
@@ -74,10 +73,11 @@ def get_realtime_data(station_number):
         if '#YY' in df_NDBC_realtime.columns:
                 df_NDBC_realtime = df_NDBC_realtime.rename(columns={'#YY': 'YYYY'})
 
-        datedf=pd.to_datetime(df_NDBC_realtime[['YYYY','MM','DD','hh','mm']].rename(columns={'YYYY': 'year', 'MM': 'month', 'DD': 'day', 'hh': 'hour', 'mm':'minute'}))
+        df_NDBC_realtime=df_NDBC_realtime.rename(columns={'YYYY': 'year', 'MM': 'month', 'DD': 'day', 'hh': 'hour', 'mm':'minute'})
+        datedf=pd.to_datetime(df_NDBC_realtime[['year','month','day','hour','minute']])
         df_NDBC_realtime=df_NDBC_realtime.join(pd.DataFrame({'datetime':datedf}))
 
-        df_NDBC_realtime=df_NDBC_realtime.rename(columns={'YYYY': 'year', 'MM': 'month', 'DD': 'day', 'hh': 'hour', 'mm':'minute'})
+        
 
 
         return df_NDBC_realtime
