@@ -3,11 +3,11 @@
 from flask import Flask, jsonify, render_template, request
 
 #Import image an file processing tools
-from PIL import Image
-import io
+
 import numpy as np
 import get_recent_data
 import get_forecast
+import pandas as pd
 import pickle
 
 #Call flask constructor
@@ -17,12 +17,6 @@ app=Flask(__name__)
 
 @app.route('/')
 def index():
-
-    df=get_recent_data.update_database()
-    
-    plot_data=df.dropna()
-
-    forecast_2_day=get_forecast.get_2_day_temp_forecast()
 
     return render_template('index.html')
 

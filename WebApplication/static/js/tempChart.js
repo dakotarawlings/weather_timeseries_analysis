@@ -27,9 +27,10 @@ new Chart(ctx, {
 
     legend: {display: false},
     aspectRatio: 1.5,
+
     title: {
       display: true,
-      text: 'Temperature',
+      text: '   ',
       fontSize: 20,
     },
     
