@@ -3,12 +3,9 @@ import sqlite3
 
 from statsmodels.tsa.deterministic import CalendarFourier, DeterministicProcess
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import time
 
-import requests
 import pandas as pd
 from datetime import datetime
 
@@ -155,7 +152,7 @@ def update_database():
 
         return df
 
-df=update_database()
+#df=update_database()
 
 
 
