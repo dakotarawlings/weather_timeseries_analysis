@@ -19,22 +19,47 @@
 
 </head>
 
-<body style="background-color: SlateBlue;color:white">
+<body class="homepage">
 
     <div class="imagebanner">
+        <h1 class="banner-text">Santa Barbara Weather Forecast</h1>
+        
+
+    </div>
+            
+    <!-- Tab links -->
+    <div class="tab">
+        <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'AirTemperature')">Air Temperature</button>
+        <button class="tablinks" onclick="openTab(event, 'WaterTemperature')">Water Temperature</button>
+        <button class="tablinks" onclick="openTab(event, 'WindSpeed')">Wind Speed</button>
+    </div>
+    
+    <!-- Tab content -->
+    <div id="AirTemperature" class="tabcontent">
+        <div>
+            <canvas class="weather-chart" id="myChart2">
+        </div>
+        <script src="../static/js/tempChart.js"></script>
+    </div>
+    
+    <div id="WaterTemperature" class="tabcontent">
+        <h3>Water Temperature</h3>
+        <p>Water temperature forecast coming soon.  </p>
+    </div>
+    
+    <div id="WindSpeed" class="tabcontent">
+        <h3>Wind Speed</h3>
+        <p>Wind speed forecast coming soon. </p>
     </div>
 
-    <h1 Weather Forecast></h1>
-    
-    <span id="result">?</span>
-      
-    <div>
-        <canvas id="myChart2" style="width:100%;max-width:600px">
+  
+    <!-- <div>
+        <canvas class="weather-chart" id="myChart2">
     </div>
 
     <script src="../static/js/tempChart.js"></script>
 
-    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+     -->
 
 
 </body>

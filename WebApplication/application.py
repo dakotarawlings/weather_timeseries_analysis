@@ -28,25 +28,22 @@ def index():
 
 #define an API endpoint that takes in an image file from a post reqest and returns
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/temperatureForecast', methods=['GET', 'POST'])
 def predict():
     
     #monitor the success of the API through a success attribute
     response={'success': False}
-    
-    #Check for a post request    
-    if request.method=='POST':
-        
-        #Check for a media attribute in the json input
-        if request.files.get('media'):
             
-            #retrieve the file sent by the post request
-            img_requested=request.files['media'].read()
-            
-            #set our success attribute to true ince we have successfully run our model
-            response['success']=True
+    df=get_recent_data.update_database()
 
-            #return our resonse JSON
+    plot_data=df.dropna()
+
+    forecast_2_day=get_forecast.get_2_day_temp_forecast()
+    
+    response['data']=plot_data.to_json()
+    response['forecast']=forecast_2_day.to_json()
+    response['success']=True
+
     return jsonify(response)
    
 if __name__=='__main__':
