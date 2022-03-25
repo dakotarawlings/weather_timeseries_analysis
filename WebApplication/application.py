@@ -66,6 +66,9 @@ def predict():
     df=get_recent_data.update_database()
 
     plot_data=df.dropna()
+    plot_data=plot_data[['ATMP']]
+    plot_data=plot_data.tail(5)
+    #plot_data=plot_data.to_numpy()
 
     forecast_2_day=get_forecast.get_2_day_temp_forecast()
     
