@@ -1,7 +1,5 @@
-// var xValues = [50,60,70,80,90,100,110,120];
-// var yValues = [7,8,8,9,9,9,10,11,14,14,15];
 
-TEMP_FORECAST_API="http://127.0.0.1:5000/temperatureForecast"
+WATER_TEMP_FORECAST_API="http://127.0.0.1:5000/weatherForecast"
 
 window.addEventListener('load', callTemperatureForecast);
 
@@ -10,7 +8,7 @@ async function callTemperatureForecast() {
 
 
   //make an http request using fetch to pass in house features to flaskAPI, get prediction, and pass it into our html updating function
-  const response=await fetch(TEMP_FORECAST_API, {
+  const response=await fetch(WATER_TEMP_FORECAST_API, {
     method:"GET",
     headers: {
       "Content-type": "application/json"
@@ -19,11 +17,9 @@ async function callTemperatureForecast() {
 
       const data=await response.json()
 
-      const dataObj = JSON.parse(data['data'])['ATMP'];
+      const dataObj = JSON.parse(data['data'])['WTMP'];
 
       const forecastObj = JSON.parse(data['forecast']);
-
-      console.log(dataObj);
 
       const xForecast=Object.keys(forecastObj);
 
@@ -36,8 +32,6 @@ async function callTemperatureForecast() {
         xForecast[i]=dateObj.toLocaleDateString();
       }
 
-      console.log(xForecast)
-      console.log(yForecast)
 
       const xValues=Object.keys(dataObj);
 
@@ -53,9 +47,9 @@ async function callTemperatureForecast() {
       }
       
       xValues_xForecast=xValues.concat(xForecast);
-      console.log(xValues_xForecast);
 
-  var ctx=document.getElementById('myChart2');
+
+  var ctx=document.getElementById('myChart3');
 
   new Chart(ctx, {
 
@@ -83,7 +77,7 @@ async function callTemperatureForecast() {
         pointBorderColor: 'rgb(75, 192, 192)',
         pointRadius: '6',
         borderWidth: '3',
-        data: [{x:xForecast[0],y:[yForecast[0]]}, {x:xForecast[1],y:[yForecast[1]]}]
+        data: []
 
       },
     

@@ -30,8 +30,8 @@
     <!-- Tab links -->
     <div class="tab">
         <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'AirTemperature')">Air Temperature</button>
-        <button class="tablinks" onclick="openTab(event, 'WaterTemperature')">Water Temperature</button>
         <button class="tablinks" onclick="openTab(event, 'WindSpeed')">Wind Speed</button>
+        <button class="tablinks" onclick="openTab(event, 'WaterTemperature')">Water Temperature</button>
     </div>
     
     <!-- Tab content -->
@@ -39,29 +39,30 @@
         <h3>Air Temperature</h3>
         <p>Air temperature forecast based on offshore bouy data  </p>
         <div>
-            <canvas class="weather-chart" id="myChart2">
+            <canvas class="weather-chart" id="myChart1">
         </div>
-        <script src="../static/js/tempChart.js"></script>
-    </div>
-    
-    <div id="WaterTemperature" class="tabcontent">
-        <h3>Water Temperature</h3>
-        <p>Water temperature forecast coming soon.  </p>
+        <script src="../static/js/AirTempChart.js"></script>
     </div>
     
     <div id="WindSpeed" class="tabcontent">
         <h3>Wind Speed</h3>
         <p>Wind speed forecast coming soon. </p>
+        <div>
+            <canvas class="weather-chart" id="myChart2">
+        </div>
+        <script src="../static/js/WindSpeedChart.js"></script>
     </div>
 
-  
-    <!-- <div>
-        <canvas class="weather-chart" id="myChart2">
+
+    <div id="WaterTemperature" class="tabcontent">
+        <h3>Water Temperature</h3>
+        <p>Water temperature forecast coming soon.  </p>
+        <div>
+            <canvas class="weather-chart" id="myChart3">
+        </div>
+        <script src="../static/js/WaterTempChart.js"></script>
     </div>
-
-    <script src="../static/js/tempChart.js"></script>
-
-     -->
+    
 
 
 </body>

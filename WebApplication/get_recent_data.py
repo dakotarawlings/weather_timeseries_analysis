@@ -146,9 +146,9 @@ def update_database():
 
         #df.dropna(inplace=True)
 
-        #Save data to local SQLite database
-        conn = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\WebApplication\NDBC_recent_cleaned_data.db")
-        df.to_sql(name=f'recent_data',con=conn,schema='NDBC_recent_cleaned_data.db',if_exists='replace') 
+        # #Save data to local SQLite database
+        # conn = sqlite3.connect(r"C:\Users\dakot\Desktop\DataScience\projects\weather_prediction\WebApplication\NDBC_recent_cleaned_data.db")
+        # df.to_sql(name=f'recent_data',con=conn,schema='NDBC_recent_cleaned_data.db',if_exists='replace') 
 
         return df
 

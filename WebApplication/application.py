@@ -58,8 +58,8 @@ def index():
 
 #define an API endpoint that takes in an image file from a post reqest and returns
 
-@app.route('/temperatureForecast', methods=['GET', 'POST'])
-def predict():
+@app.route('/weatherForecast', methods=['GET', 'POST'])
+def temperatureForecast():
     
     #monitor the success of the API through a success attribute
     response={'success': False}
@@ -67,7 +67,7 @@ def predict():
     df=get_recent_data.update_database()
 
     plot_data=df.dropna()
-    plot_data=plot_data[['ATMP']]
+    
     plot_data=plot_data.tail(10)
     forecast_2_day=get_forecast.get_temp_forecast()
     
@@ -76,6 +76,8 @@ def predict():
     response['success']=True
 
     return jsonify(response)
+
+
    
 if __name__=='__main__':
     app.run(debug=True)
