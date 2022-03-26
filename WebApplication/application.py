@@ -46,6 +46,7 @@ class BoostedHybridModel:
 
 
 #Call flask constructor
+
 app=Flask(__name__)
 
 #Define flask endpoint for the main html page
@@ -67,10 +68,8 @@ def predict():
 
     plot_data=df.dropna()
     plot_data=plot_data[['ATMP']]
-    plot_data=plot_data.tail(5)
-    #plot_data=plot_data.to_numpy()
-
-    forecast_2_day=get_forecast.get_2_day_temp_forecast()
+    plot_data=plot_data.tail(10)
+    forecast_2_day=get_forecast.get_temp_forecast()
     
     response['data']=plot_data.to_json()
     response['forecast']=forecast_2_day.to_json()

@@ -1,53 +1,70 @@
-var xValues = [50,60,70,80,90,100,110,120];
-var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+// var xValues = [50,60,70,80,90,100,110,120];
+// var yValues = [7,8,8,9,9,9,10,11,14,14,15];
 
 TEMP_FORECAST_API="http://127.0.0.1:5000/temperatureForecast"
 
 window.addEventListener('load', callTemperatureForecast);
 
 //This function makes an http request to our flask api, sending the user input data and getting a price prediction
-function callTemperatureForecast() {
+async function callTemperatureForecast() {
 
 
   //make an http request using fetch to pass in house features to flaskAPI, get prediction, and pass it into our html updating function
-  fetch(TEMP_FORECAST_API, {
+  const response=await fetch(TEMP_FORECAST_API, {
     method:"GET",
     headers: {
       "Content-type": "application/json"
     }
-      }).then(response => response.json()
-      .then(function(data) {
+      })
 
-          const dataObj = JSON.parse(data['data'])['ATMP'];
+      const data=await response.json()
 
-          console.log(Object.keys(dataObj));
-          console.log(Object.values(dataObj));
+      const dataObj = JSON.parse(data['data'])['ATMP'];
 
-          xValues=Object.values(dataObj)
-          yValues=Object.values(dataObj)
+      const forecastObj = JSON.parse(data['forecast']);
 
-          const forecastObj = JSON.parse(data['forecast']);
+      console.log(dataObj);
 
-          console.log(Object.keys(forecastObj));
+      const xForecast=Object.keys(forecastObj);
 
-          
+      const yForecast=Object.values(forecastObj);
 
-           }))
-          
+      for (let i = 0; i < xForecast.length; i++) {
+        
+        dateInt=parseInt(xForecast[i]);
+        const dateObj=new Date(dateInt);
+        xForecast[i]=dateObj.toLocaleDateString();
+      }
 
- 
-  }
+      console.log(xForecast)
+      console.log(yForecast)
 
+      const xValues=Object.keys(dataObj);
+
+      
+
+      const yValues=Object.values(dataObj);
+
+      for (let i = 0; i < xValues.length; i++) {
+        
+        dateInt=parseInt(xValues[i]);
+        const dateObj=new Date(dateInt);
+        xValues[i]=dateObj.toLocaleDateString();
+      }
+      
+      xValues_xForecast=xValues.concat(xForecast);
+      console.log(xValues_xForecast);
 
   var ctx=document.getElementById('myChart2');
 
   new Chart(ctx, {
-    type: "line",
+
     data: {
-      labels: xValues,
+      labels: xValues_xForecast,
       datasets: [{
+        label:"Pat 10 days",
         fill: false,
-  
+        type: "line",
         pointBackgroundColor: '#3e95cd',
         pointBorderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgb(75, 192, 192)',
@@ -56,8 +73,24 @@ function callTemperatureForecast() {
         pointRadius: '6',
         borderWidth: '3',
         data: yValues
-      }]
-    },
+      },
+
+      {
+        label:"forecast",
+        fill: false,
+        type: "scatter",
+        pointBackgroundColor: '#ff0000',
+        pointBorderColor: 'rgb(75, 192, 192)',
+        pointRadius: '6',
+        borderWidth: '3',
+        data: [{x:xForecast[0],y:[yForecast[0]]}, {x:xForecast[1],y:[yForecast[1]]}]
+
+      },
+    
+    
+    
+    ],
+  },
     
     options: {
 
@@ -74,7 +107,7 @@ function callTemperatureForecast() {
       scales: {
         
         yAxes: [{
-          ticks: {min: 6, max:16, fontSize: 15},
+          ticks: {min: 10, max: 20, fontSize: 15},
           scaleLabel: {
             display: true,
             labelString: 'Temperature (C)',
@@ -107,4 +140,14 @@ function callTemperatureForecast() {
     }
   });
 
-  
+
+
+
+
+
+   }
+
+
+
+
+

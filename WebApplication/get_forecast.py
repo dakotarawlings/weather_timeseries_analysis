@@ -54,22 +54,39 @@ class BoostedHybridModel:
 
 
 
-def get_2_day_temp_forecast():
-    modelFile = open('modelFile.p', 'rb')     
-    pmodel = pickle.load(modelFile)
+def get_temp_forecast():
+    modelFile = open('TemperatureModel_OneDay.p', 'rb')     
+    one_day_model = pickle.load(modelFile)
+    modelFile.close()
+
+    modelFile = open('TemperatureModel_TwoDay.p', 'rb')     
+    two_day_model = pickle.load(modelFile) 
+    modelFile.close()   
 
     df=get_recent_data.update_database()
-    
-    plot_data=df.dropna()
+ 
+    one_day_data=df.iloc[[len(df['ATMP'].dropna())]]
 
-    two_day_data=df.iloc[[len(plot_data)+1]]
-    X_model_2=two_day_data[[ 'ATMP_lag_2', 'ATMP_lag_3',
+    X_model_2_oneDay=one_day_data[['ATMP_lag_1', 'ATMP_lag_2', 'ATMP_lag_3',
+       'ATMP_lag_4', 'ATMP_lag_5', 'ATMP_lag_6', 'ATMP_lag_7', 'ATMP_lag_8',
+       'WTMP_lag_1', 'WTMP_lag_2', 'WTMP_lag_3', 'WTMP_lag_4', 'WTMP_lag_5',
+       'WTMP_lag_6', 'WTMP_lag_7', 'WTMP_lag_8', 'WSPD_lag_1', 'WSPD_lag_2']]
+
+    two_day_data=df.iloc[[len(df['ATMP'].dropna())+1]]
+
+    X_model_2_twoDay=two_day_data[[ 'ATMP_lag_2', 'ATMP_lag_3',
     'ATMP_lag_4', 'ATMP_lag_5', 'ATMP_lag_6', 'ATMP_lag_7', 'ATMP_lag_8',
         'WTMP_lag_2', 'WTMP_lag_3', 'WTMP_lag_4', 'WTMP_lag_5',
     'WTMP_lag_6', 'WTMP_lag_7', 'WTMP_lag_8', 'WSPD_lag_2']]
 
-    y_predp=pmodel.predict(X_model_2)
-    modelFile.close()
-    return y_predp
 
-#forecast=get_2_day_temp_forecast()
+    forecast=one_day_model.predict(X_model_2_oneDay)
+    forecast=forecast.append(two_day_model.predict(X_model_2_twoDay))
+
+    return forecast
+
+# forecast=get_temp_forecast()
+# print(forecast.head())
+
+
+
