@@ -44,7 +44,7 @@
     font-weight: bold;
     line-height: 90px; 
     height: 90px; 
-    margin-top: 10px; 
+    margin-top: 5px; 
     margin-bottom: 0px; 
     
     font-family: "Montserrat", sans-serif;
@@ -60,7 +60,6 @@
     overflow: hidden;
     border: 1px solid rgb(123, 117, 117);
     background-color: rgb(74, 72, 72);
-    
   }
   
   /* Style the buttons that are used to open the tab content */

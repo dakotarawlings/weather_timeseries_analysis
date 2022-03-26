@@ -1,5 +1,5 @@
 
-TEMP_FORECAST_API="http://127.0.0.1:5000/weatherForecast"
+WIND_FORECAST_API="http://127.0.0.1:5000/weatherForecast"
 
 window.addEventListener('load', callTemperatureForecast);
 
@@ -8,7 +8,7 @@ async function callTemperatureForecast() {
 
 
   //make an http request using fetch to pass in house features to flaskAPI, get prediction, and pass it into our html updating function
-  const response=await fetch(TEMP_FORECAST_API, {
+  const response=await fetch(WIND_FORECAST_API, {
     method:"GET",
     headers: {
       "Content-type": "application/json"
@@ -17,7 +17,7 @@ async function callTemperatureForecast() {
 
       const data=await response.json()
 
-      const dataObj = JSON.parse(data['data'])['ATMP'];
+      const dataObj = JSON.parse(data['data'])['WSPD'];
 
       const forecastObj = JSON.parse(data['forecast']);
 
@@ -34,6 +34,8 @@ async function callTemperatureForecast() {
 
       const xValues=Object.keys(dataObj);
 
+      
+
       const yValues=Object.values(dataObj);
 
       for (let i = 0; i < xValues.length; i++) {
@@ -45,16 +47,14 @@ async function callTemperatureForecast() {
       
       xValues_xForecast=xValues.concat(xForecast);
 
-  var ctx=document.getElementById('myChart1');
+  var ctx=document.getElementById('myChart2');
 
   new Chart(ctx, {
 
     data: {
       labels: xValues_xForecast,
-      
-      
       datasets: [{
-        label:"Past 10 days",
+        label:"Pat 10 days",
         fill: false,
         type: "line",
         pointBackgroundColor: '#3e95cd',
@@ -68,14 +68,14 @@ async function callTemperatureForecast() {
       },
 
       {
-        label:"Forecast",
+        label:"forecast",
         fill: false,
         type: "scatter",
-        pointBackgroundColor: 'rgb(230, 69, 69)',
+        pointBackgroundColor: '#ff0000',
         pointBorderColor: 'rgb(75, 192, 192)',
         pointRadius: '6',
         borderWidth: '3',
-        data: [{x:xForecast[0],y:[yForecast[0]]}, {x:xForecast[1],y:[yForecast[1]]}]
+        data: []
 
       },
     
@@ -86,25 +86,12 @@ async function callTemperatureForecast() {
     
     options: {
 
-      legend: {
-        display: true,
-        labels: {
-          fontStyle: "bold",
-          usePointStyle: true,
-          padding: 30
-      }  
-      },
-      layout: {
-        padding: {
-          left: 20,
-          right: 20,
-        }
-      },
+      legend: {display: false},
       aspectRatio: 1.5,
 
       title: {
-        display: false,
-        // text: '   ',
+        display: true,
+        text: '   ',
         fontSize: 20,
       },
       
@@ -112,12 +99,11 @@ async function callTemperatureForecast() {
       scales: {
         
         yAxes: [{
-          ticks: {min: 10, max: 20, fontSize: 15, fontStyle: "bold",},
+          ticks: {min: 0, max: 20, fontSize: 15},
           scaleLabel: {
             display: true,
-            labelString: 'Temperature (C)',
-            fontStyle: "bold",
-            fontSize: 16,
+            labelString: 'Wind Speed (knots)',
+            fontSize: 15,
           },
 
           gridLines: {
@@ -128,12 +114,11 @@ async function callTemperatureForecast() {
           
         }],
         xAxes: [{
-          ticks: {fontSize: 15, },
+          ticks: {fontSize: 15},
           scaleLabel: {
             display: true,
             labelString: 'Day',
-            fontStyle: "bold",
-            fontSize: 16,
+            fontSize: 15,
           },
           gridLines: {
             color: "#3e95cd",
@@ -146,6 +131,11 @@ async function callTemperatureForecast() {
 
     }
   });
+
+
+
+
+
 
    }
 
