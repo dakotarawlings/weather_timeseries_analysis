@@ -11,11 +11,8 @@ functions:
 
 """
 
-#%%
-#Data manipulation packages
 import numpy as np
 import pandas as pd
-#Other packages
 import time
 import requests
 import plotting_functions
