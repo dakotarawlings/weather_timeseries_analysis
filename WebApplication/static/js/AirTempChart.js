@@ -1,5 +1,5 @@
 
-TEMP_FORECAST_API="http://127.0.0.1:5000/weatherForecast"
+TEMP_FORECAST_API="/weatherForecast"
 
 window.addEventListener('load', callTemperatureForecast);
 
@@ -83,9 +83,9 @@ async function callTemperatureForecast() {
     
     ],
   },
-    
-    options: {
 
+    options: {
+ 
       legend: {
         display: true,
         labels: {
@@ -124,9 +124,27 @@ async function callTemperatureForecast() {
             color: "#3e95cd",
             lineWidth:2,
             borderDash: [2, 5], 
+            display: true,
           }, 
           
-        }],
+        },
+
+          {
+            position: 'right',
+            ticks: {
+              display: false
+            },
+            gridLines: {
+              display: false,
+              color: "#3e95cd",
+              lineWidth:2,
+              drawOnChartArea: false,
+              drawTicks: false
+            }
+          }
+      
+      
+      ],
         xAxes: [{
           ticks: {fontSize: 15, },
           scaleLabel: {
@@ -139,17 +157,32 @@ async function callTemperatureForecast() {
             color: "#3e95cd",
             lineWidth:2,
             borderDash: [2, 5], 
+            display: true
 
-          },    
-        }],
+          },
+              
+        },
+            
+          {
+            position: 'top',
+            ticks: {
+              display: false
+            },
+            gridLines: {
+              display: false,
+              color: "#3e95cd",
+              lineWidth:2,
+              drawOnChartArea: false,
+              drawTicks: false
+            }
+          }
+      ],
       },
 
     }
+  
+    
   });
 
    }
-
-
-
-
 

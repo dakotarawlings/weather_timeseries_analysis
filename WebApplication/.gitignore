@@ -1,0 +1,8 @@
+
+test_script.py
+NDBC_recent_cleaned_data.db
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

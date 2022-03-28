@@ -1,0 +1,8 @@
+colorama==0.4.3
+flask 
+numpy==1.22.2
+requests==2.26.0
+scikit-learn 
+statsmodels==0.13.2
+xgboost==1.4.2
+gunicorn

@@ -1,5 +1,5 @@
 
-WATER_TEMP_FORECAST_API="http://127.0.0.1:5000/weatherForecast"
+WATER_TEMP_FORECAST_API="/weatherForecast"
 
 window.addEventListener('load', callTemperatureForecast);
 
