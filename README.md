@@ -9,9 +9,7 @@
 ## Overview
 * Scraped live and historical timeseries weather data from NOAA bouy stations
 * Feature engineering: lag features, fourier features, seasonal indicators, feature scaling
-* Built a boosted hybrid model 
-  * Linear model to predict seasonality using fourier features 
-  * XGB model to predict residuals using lag features
+* Built a boosted hybrid model with a linear model (fourier features) and an XGboost model with lag features
 * Deployed model in a full stack weather forecasting app on AWS
 
 ## Resources
