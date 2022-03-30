@@ -1,33 +1,53 @@
-#import flask tools
-from flask import Flask, jsonify, render_template, request
+"""This script defines a class for building a boosted hybrid model for timeseries prediction
 
-#Import image an file processing tools
-import numpy as np
+This file can be imported as a module and contains the following class:
 
-import pickle
+    Class: BoostedHybridModel
 
-import sqlite3
+    Attributes:
+        model_1 (obj): First model to be used for fitting forier features to the data
+        model_2 (obj): Second model to be used for fitting residuals 
+
+    Methods:
+        fit(X_model_2, y): fit timeseries data to the boosted hybrid model
+        predict(X_model_2): Generate a forecast for data for which the target is unknown (forecast horizon)
+"""
 
 import pandas as pd
-import numpy as np
-
-from sklearn.linear_model import LinearRegression
-
 from sklearn.model_selection import train_test_split
-
-from xgboost import XGBRegressor
-
 from statsmodels.tsa.deterministic import CalendarFourier, DeterministicProcess
-from sklearn.linear_model import LinearRegression
 
- 
 class BoostedHybridModel:
+    """
+    Class for building a boosted hybrid model for timeseries prediction
+
+    Attributes:
+        model_1 (obj): First model to be used for fitting forier features to the data
+        model_2 (obj): Second model to be used for fitting residuals 
+
+    Methods:
+        fit(X_model_2, y): fit timeseries data to the boosted hybrid model
+        predict(X_model_2): Generate a forecast for data for which the target is unknown (forecast horizon)
+    """
+
     def __init__(self, model_1, model_2):
+        """
+        Args:
+            model_1 (obj): First model to be used for fitting forier features to the data
+            model_2 (obj): Second model to be used for fitting residuals 
+        """
+
         self.model_1=model_1
         self.model_2=model_2
         self.y_column=None
 
     def fit(self, X_model_2, y):
+        """Gets and prints the spreadsheet's header columns
+
+        Args:
+            X_model_2 (dataframe): dataframe of features (training data)
+            y (dataframe): dataframe of targets (training data)
+        """
 
         fourier_pairs=CalendarFourier(freq="A", order=3)
         X=fourier_pairs.in_sample(X_model_2.index)
@@ -42,6 +62,13 @@ class BoostedHybridModel:
         self.y_residuals=y_residuals
 
     def predict(self, X_model_2):
+        """Gets and prints the spreadsheet's header columns
+
+        Args:
+            X_model_2 (dataframe): Dataframe of features (test data)
+        Returns:
+            dataframe: dataframe of predicted targets
+        """
 
         fourier_pairs=CalendarFourier(freq="A", order=3)
         X=fourier_pairs.in_sample(X_model_2.index)
