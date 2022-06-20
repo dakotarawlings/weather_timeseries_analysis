@@ -40,11 +40,15 @@
 
 ## Exploratory Data Analysis
 Used periodogram and seosonal plots to analyze the seasonality of the timeseries data and guide selection of fourier features
-
 <p align="center">
   <img src="readme_images/ATMPtimeplot.png" width="500" />
 </p>
-
+<p align="center">
+  <img src="readme_images/histograms.png" width="500" />
+</p>
+<p align="center">
+  <img src="readme_images/boxplots.png" width="500" />
+</p>
 <p align="center">
   <img src="readme_images/periodogram.png" width="500" />
 </p>
