@@ -23,7 +23,6 @@ from sklearn.linear_model import LinearRegression
 
 from BoostedHybridModel import BoostedHybridModel
 
-
 def get_temp_forecast():
     modelFile = open('TemperatureModel_OneDay.p', 'rb')     
     one_day_model = pickle.load(modelFile)
