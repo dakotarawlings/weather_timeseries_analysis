@@ -30,8 +30,8 @@
 * Resampled the data from hourly to daily frequency
 
 <p float="left" align="center">
-  <img src="readme_images/lagplots.png" height="200" />
-  <img src="readme_images/parcor.png" height="200" />
+  <img src="readme_images/lagplots.png" height="250" />
+  <img src="readme_images/parcor.png" height="250" />
 </p>
 
 <p align="center">
