@@ -27,7 +27,9 @@
 * Identified gaps in data and streaks of sequential NaNs
 * Imputed missing data from nearby weather stations
 * Analyzed correlation and parcor between the target and lag features
-* Resampled the data from hourly to daily frequency
+* Resampled the data from hourly to daily frequency (daily max)
+* Created lag features for air temp, water temp, wnd speed, and pressure
+* Note: a min max or a standard scaler could be helpful here. Features were not scaled for the boosted hybrid air temp model because all of the non-scaled features are being passed to a tree based model (and thus scaling is less important)
 
 <p float="left" align="center">
   <img src="readme_images/lagplots.png" height="250" />
