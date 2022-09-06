@@ -4,7 +4,7 @@
   <img src="readme_images/homepage.png" width="600" >
 </p>
 
-### Web App Link: http://weatherwebapp.us-west-1.elasticbeanstalk.com/
+### Web App Link: https://sb-weather-prediction-app.herokuapp.com/
 
 ## Overview
 * Scraped live and historical timeseries weather data from NOAA bouy stations
@@ -77,7 +77,7 @@ The Boosted Hybrid model achieved a 1-day forecast MAE of 0.9 C and a two day fo
 
 * Created flask API endpoint 
 * Wrote a full stack web application in HTML, CSS, and JavaScript which calls the flask API, and displays the max daily air temp over the past 10 days and the forecasted air temp using chart.js
-* Hosted the web application on AWS EB: http://weatherwebapp.us-west-1.elasticbeanstalk.com/
+* Hosted the web application on AWS EB: https://sb-weather-prediction-app.herokuapp.com/
 
 ## Future work
 * Working on improving documentation
